@@ -1,0 +1,51 @@
+#!/bin/bash
+
+serverName=$(ls|grep 'Server.py')
+tornadoPorts='8000 8001 8002 8003'
+
+function start {
+    for port in $tornadoPorts
+    do
+        python tornadoServer.py --port=$port;
+        echo "Server: $serverName with port $port was Started!";
+    done
+    exit 1
+    
+}
+
+function stop {
+    TORNADOS=$(ps ax |grep tornadoServer |grep -v grep| awk -F ' ' '{print $1}')
+
+    for pid in $TORNADOS
+    do
+        echo "Killing pid: $pid"
+        kill -9 $pid;
+    done
+}
+
+case "$1" in
+    start)
+        if ( start ); then
+            exit 0
+        else
+            exit 0;
+        fi
+    ;;
+
+    stop)
+        stop
+    ;;
+    
+    restart)
+        stop
+        if ( start ); then
+            exit 0
+        else
+            exit 0;
+        fi
+    ;;
+
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 1
+esac
