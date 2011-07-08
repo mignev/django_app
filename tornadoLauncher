@@ -6,7 +6,7 @@ tornadoPorts='8000 8001 8002 8003'
 function start {
     for port in $tornadoPorts
     do
-        python tornadoServer.py --port=$port;
+        python $serverName --port=$port;
         echo "Server: $serverName with port $port was Started!";
     done
     exit 1
@@ -14,7 +14,7 @@ function start {
 }
 
 function stop {
-    TORNADOS=$(ps ax |grep tornadoServer |grep -v grep| awk -F ' ' '{print $1}')
+    TORNADOS=$(ps ax |grep $serverName |grep -v grep| awk -F ' ' '{print $1}')
 
     for pid in $TORNADOS
     do
